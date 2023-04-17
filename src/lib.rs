@@ -138,7 +138,6 @@ pub fn check_guess_vec(answer: &str, guess: &str) -> GuessResult {
     assert!(answer.len() == 5);
     assert!(guess.len() == 5);
 
-
     // crate::check_guess_vec("abhde", "bbcdf"),
     // [Wrong, Correct, Wrong, Correct, Wrong]
     let mut guess_result = GuessResult::default();
@@ -151,14 +150,12 @@ pub fn check_guess_vec(answer: &str, guess: &str) -> GuessResult {
             if a == g {
                 guess_result[i] = LetterState::Correct;
             } else {
-                if let Some(position) = guess
-                    .chars()
-                    .enumerate()
-                    .position(|(i, c)| {
-                        // println!("the c is {}     the a is {}", c, a);
-                        guess_result[i] == LetterState::Wrong && c == a
-                    })
-                {
+                if let Some(position) = guess.chars().enumerate().position(|(i, c)| {
+                    // println!("the c is {}     the a is {}", c, a);
+                    guess_result[i] == LetterState::Wrong
+                        && c != answer.chars().nth(i).unwrap()
+                        && c == a
+                }) {
                     guess_result[position] = LetterState::Misplaced;
                 }
             }
@@ -259,6 +256,14 @@ mod tests {
         assert_eq!(
             crate::check_guess_vec("acaca", "hhhch"),
             [Wrong, Wrong, Wrong, Correct, Wrong]
+        );
+    }
+
+    #[test]
+    fn test_5() {
+        assert_eq!(
+            crate::check_guess_vec("acacc", "hhaha"),
+            [Wrong, Wrong, Correct, Wrong, Misplaced]
         );
     }
 }
