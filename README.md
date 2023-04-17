@@ -1,5 +1,7 @@
 
-A wordle game using rust. To play run [cargo r].
+A wordle game using rust which allows users to play the wordle game on the terminal. 
+
+To play run [cargo r].
 
 
 ## License
